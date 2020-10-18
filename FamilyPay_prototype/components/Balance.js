@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function Balance() {
+export default function Balance({ inAccount }) {
   return (
     <View style={styles.topContainer}>
       <Text style={{ fontWeight: "bold", fontSize: 30, padding: 10 }}>
@@ -10,7 +10,7 @@ export default function Balance() {
       <View style={{ flexDirection: "row" }}>
         <View style={styles.amountView}>
           <Text style={{ fontSize: 40, fontWeight: "bold", color: "#D4AC0D" }}>
-            1000€
+            {inAccount}€
           </Text>
           <Text style={{ fontWeight: "bold", fontSize: 20 }}>IN JE</Text>
           <Text style={{ fontWeight: "bold", fontSize: 20 }}>ACCOUNT</Text>

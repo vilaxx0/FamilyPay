@@ -77,7 +77,7 @@ export default function Transacties({ navigation }) {
     <View style={styles.container}>
       <View style={styles.main}>
         <View style={styles.balanceContainer}>
-          <Balance />
+          <Balance inAccount={1000} />
           <View style={{ flex: 1, marginTop: 30 }}>
             <View style={{ flexDirection: "row" }}>
               <View

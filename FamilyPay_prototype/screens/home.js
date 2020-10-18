@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,7 +12,21 @@ import RouteButton from "../shared/route_button";
 import VirtualPet from "../components/VirtualPet";
 import Balance from "../components/Balance";
 
+import { AntDesign } from "@expo/vector-icons";
+import { globalStyles } from "../shared/globalStyles";
+
 export default function Home({ navigation }) {
+  const [balance, setBalance] = useState(1200);
+  const addBalance = (amount) => {
+    setBalance((prevState) => {
+      return prevState + amount;
+    });
+  };
+  const takeBalance = (amount) => {
+    setBalance((prevState) => {
+      return prevState - amount;
+    });
+  };
   return (
     <ImageBackground
       source={require("../assets/Green_ray_burst.jpg")}
@@ -20,10 +34,35 @@ export default function Home({ navigation }) {
     >
       <View style={styles.container}>
         <View style={styles.header}>
-          <Balance />
+          <Balance inAccount={balance} />
+
+          <View
+            style={{
+              flexDirection: "row",
+              paddingBottom: 120,
+              paddingRight: 280,
+              position: "absolute",
+            }}
+          >
+            <TouchableOpacity onPress={() => takeBalance(100)}>
+              <View style={globalStyles.backButton}>
+                <View style={globalStyles.backInner}>
+                  <AntDesign name="minus" size={10} color="white" />
+                </View>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => addBalance(100)}>
+              <View style={globalStyles.backButton}>
+                <View style={globalStyles.backInner}>
+                  <AntDesign name="plus" size={10} color="white" />
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
+
         <View style={styles.body}>
-          <VirtualPet />
+          <VirtualPet amount={balance} />
         </View>
 
         <View style={styles.footer}>
@@ -71,6 +110,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
+    paddingBottom: 10,
   },
   body: {
     flex: 2,
