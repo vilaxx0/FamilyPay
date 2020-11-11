@@ -1,35 +1,56 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 export const globalStyles = StyleSheet.create({
-  button: {
-    backgroundColor: "#F3E55D",
+  simpleContainer: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: "#D4AC0D",
-    padding: 5,
   },
-  inner: {
-    backgroundColor: "#F3E55D",
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 10,
-    borderColor: "#D4AC0D",
+
+  balanceText: {
+    fontFamily: "fugaz-regular",
+    fontSize: 25,
   },
-  backButton: {
-    backgroundColor: "#F3E55D",
+  balanceTitle: {
+    fontSize: Dimensions.get("window").width * 0.07,
+    fontFamily: "fredoka-regular",
+    alignSelf: "center",
+  },
+  balanceColumn: {
+    flexDirection: "row",
     alignItems: "center",
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: "#D4AC0D",
-    padding: 5,
-    marginLeft: 15,
+    justifyContent: "space-evenly",
+    width: "100%",
   },
-  backInner: {
-    backgroundColor: "#F3E55D",
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 5,
-    borderColor: "#D4AC0D",
+  balanceNumberColumn: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+  },
+  balanceNumberText: {
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "#f7b31d",
+  },
+  spelenContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#56d756",
+  },
+  spelenInnerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    borderRadius: 15,
+    backgroundColor: "white",
+    margin: 15,
+    padding: 15,
+  },
+  spelenHeader: {
+    flex: 1,
+  },
+  spelenFooter: {
+    flex: 1,
   },
 });

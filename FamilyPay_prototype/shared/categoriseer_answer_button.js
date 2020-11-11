@@ -1,23 +1,23 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Dimensions } from "react-native";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { globalStyles } from "../shared/globalStyles";
 
-export default function RouteButton({ iconName, iconSize, textName }) {
+export default function RouteButton({ iconName, iconSize, text }) {
   return (
-    <View style={globalStyles.simpleContainer}>
-      <View style={styles.routeButton}>
-        <View style={styles.innerRouteButton}>
+    <View style={(globalStyles.simpleContainer, { marginBottom: 20 })}>
+      <View style={styles.categoriseerButton}>
+        <View style={styles.innerCategoriseerButton}>
           <FontAwesome5 name={iconName} size={iconSize} color="white" />
         </View>
       </View>
-      <Text style={styles.routeButtonText}>{textName}</Text>
+      <Text style={styles.categoriseerButtonText}>{text}</Text>
     </View>
   );
 }
 const styles = StyleSheet.create({
-  routeButton: {
+  categoriseerButton: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
@@ -30,10 +30,11 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.44, // from 0 to 1
     shadowRadius: 10.32,
+    marginHorizontal: Dimensions.get("window").width * 0.06,
   },
-  innerRouteButton: {
-    width: 70,
-    height: 70,
+  innerCategoriseerButton: {
+    width: 100,
+    height: 100,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F3E55D",
@@ -42,15 +43,13 @@ const styles = StyleSheet.create({
     margin: 6,
     borderColor: "#D4AC0D",
   },
-  routeButtonText: {
+  categoriseerButtonText: {
     fontWeight: "bold",
     textTransform: "uppercase",
-    fontSize: 20,
+    fontSize: 18,
     textAlign: "center",
     letterSpacing: 1,
     alignSelf: "center",
-    textShadowRadius: 10,
-    textShadowColor: "white",
-    margin: 8,
+    paddingTop: 5,
   },
 });
