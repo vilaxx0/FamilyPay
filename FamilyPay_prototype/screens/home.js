@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { Component, useEffect } from "react";
+import React, { Component } from "react";
 import {
   StyleSheet,
   View,
@@ -7,52 +7,49 @@ import {
   ImageBackground,
   Dimensions,
   Text,
+  Image,
 } from "react-native";
-
 import { EventRegister } from "react-native-event-listeners";
-
+import moment from "moment";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-import RouteButton from "../shared/route_button";
+import RouteButton from "../components/route_button";
 import VirtualPet from "../components/VirtualPet";
 import Balance from "../components/Balance";
 import * as Animatable from "react-native-animatable";
-
 import renderIf from "render-if";
-
 import { globalStyles } from "../shared/globalStyles";
-
 export default class Home extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      balance: 1500,
-      points: 300,
+      balance: 1000,
+      points: 150,
       toggleAnimationType: false,
       animationPath: require("../assets/VirtualPet/doing_okay_bee.json"),
+      categorizeDate: moment("2010-11-23"),
+      betaalDate: moment("2010-11-23"),
     };
+    //listener to add points after finishing quiz and set the date
+    this.listener = EventRegister.addEventListener(
+      "addPointsCategorize",
+      (points) => {
+        this.setState({
+          points: this.state.points + points,
+          categorizeDate: moment(),
+        });
+      }
+    );
+    this.listener = EventRegister.addEventListener(
+      "addPointsBetaal",
+      (points) => {
+        this.setState({
+          points: this.state.points + points,
+          betaalDate: moment(),
+        });
+      }
+    );
   }
-  // const addBalance = (amount) => {
-  //   setBalance((prevState) => {
-  //     return prevState + amount;
-  //   });
-  // };
-  // const takeBalance = (amount) => {
-  //   setBalance((prevState) => {
-  //     return prevState - amount;
-  //   });
-  // };
-
-  componentWillMount() {
-    this.listener = EventRegister.addEventListener("addPoints", (points) => {
-      this.setState({
-        points: this.state.points + points,
-      });
-    });
-  }
-
   componentWillUnmount() {
     EventRegister.removeEventListener(this.listener);
   }
@@ -77,6 +74,24 @@ export default class Home extends Component {
         }
       );
     };
+    const navigationCheck = (catDate, betDate) => {
+      let catDays = moment().diff(moment(catDate), "days");
+      let betDays = moment().diff(moment(betDate), "days");
+      let cAvailable = false;
+      let bAvailable = false;
+      if (catDays >= 1) {
+        cAvailable = true;
+      }
+      if (betDays >= 1) {
+        bAvailable = true;
+      }
+      return this.props.navigation.navigate("Spelen", {
+        balance: this.state.balance,
+        points: this.state.points,
+        categorizeAvailable: cAvailable,
+        betaalAvailable: bAvailable,
+      });
+    };
     return (
       <ImageBackground
         source={require("../assets/Green_ray_burst.jpg")}
@@ -93,30 +108,11 @@ export default class Home extends Component {
           </View>
 
           <View style={styles.header}>
-            <Balance balance={this.state.balance} points={this.state.points} />
-            {/* <View
-            style={{
-              flexDirection: "row",
-              paddingBottom: 120,
-              paddingRight: 280,
-              position: "absolute",
-            }}
-            >
-            <TouchableOpacity onPress={() => takeBalance(100)}>
-              <View style={globalStyles.backButton}>
-                <View style={globalStyles.backInner}>
-                  <AntDesign name="minus" size={10} color="white" />
-                </View>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => addBalance(100)}>
-              <View style={globalStyles.backButton}>
-                <View style={globalStyles.backInner}>
-                  <AntDesign name="plus" size={10} color="white" />
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View> */}
+            <Balance
+              balance={this.state.balance}
+              points={this.state.points}
+              title={"Je hebt al veel gespaard!"}
+            />
           </View>
 
           <View style={styles.footer}>
@@ -140,10 +136,10 @@ export default class Home extends Component {
             <View style={styles.button}>
               <TouchableOpacity
                 onPress={() =>
-                  this.props.navigation.navigate("Spelen", {
-                    balance: this.state.balance,
-                    points: this.state.points,
-                  })
+                  navigationCheck(
+                    this.state.categorizeDate,
+                    this.state.betaalDate
+                  )
                 }
               >
                 <RouteButton
@@ -164,21 +160,29 @@ export default class Home extends Component {
               <TouchableOpacity
                 onPress={() => {
                   changeAnimation(
-                    require("../assets/VirtualPet/eating_coco.json")
+                    require("../assets/VirtualPet/drunk_bee.json")
                   );
                 }}
               >
-                <FontAwesome5 name="cookie-bite" size={50} color="black" />
+                <Image
+                  style={styles.activityIcon}
+                  source={require("../assets/milk.png")}
+                />
+                <Text style={styles.activityText}>Milk</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={() => {
                   changeAnimation(
-                    require("../assets/VirtualPet/paint_bee.json")
+                    require("../assets/VirtualPet/eating_candy.json")
                   );
                 }}
               >
-                <FontAwesome5 name="paint-brush" size={50} color="black" />
+                <Image
+                  style={styles.activityIcon}
+                  source={require("../assets/candy.png")}
+                />
+                <Text style={styles.activityText}>Snoepje</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -188,11 +192,11 @@ export default class Home extends Component {
                   );
                 }}
               >
-                <MaterialCommunityIcons
-                  name="power-sleep"
-                  size={50}
-                  color="black"
+                <Image
+                  style={styles.activityIcon}
+                  source={require("../assets/pillow.png")}
                 />
+                <Text style={styles.activityText}>Kussentje</Text>
               </TouchableOpacity>
             </Animatable.View>
           )}
@@ -203,7 +207,6 @@ export default class Home extends Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   background: {
     flex: 1,
@@ -274,5 +277,15 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.44, // from 0 to 1
     shadowRadius: 10.32,
+  },
+  activityIcon: {
+    height: 50,
+    width: 50,
+  },
+  activityText: {
+    textAlign: "center",
+    fontSize: 14,
+    fontWeight: "bold",
+    marginTop: 8,
   },
 });

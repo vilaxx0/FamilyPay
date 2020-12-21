@@ -2,7 +2,6 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
-import { globalStyles } from "../shared/globalStyles";
 
 export default function Back_Button({ navigation }) {
   return (

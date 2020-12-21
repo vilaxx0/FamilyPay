@@ -1,21 +1,20 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState, useLayoutEffect } from "react";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 
-import { AntDesign } from "@expo/vector-icons";
-import { globalStyles } from "../shared/globalStyles";
-
+import BackButton from "../components/back_button";
 import Transaction from "../components/Transaction";
-import TransactionButtton from "../shared/transaction_button";
 import Balance from "../components/Balance";
 
-export default function Transacties({ navigation }) {
+import VirtualPet from "../components/VirtualPet";
+
+export default function Transacties({ navigation, route }) {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <BackButton navigation={navigation} />,
+    });
+  }, [navigation]);
+  const { balance, points } = route.params;
   const [transactions, setTransactions] = useState([
     {
       id: "1",
@@ -60,63 +59,20 @@ export default function Transacties({ navigation }) {
       amount: "-56.90€",
     },
   ]);
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <View style={globalStyles.backButton}>
-            <View style={globalStyles.backInner}>
-              <AntDesign name="back" size={28} color="white" />
-            </View>
-          </View>
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
   return (
     <View style={styles.container}>
       <View style={styles.main}>
         <View style={styles.balanceContainer}>
-          <Balance inAccount={1000} />
-          <View style={{ flex: 1, marginTop: 30 }}>
-            <View style={{ flexDirection: "row" }}>
-              <View
-                style={{
-                  flex: 1,
-                  alignSelf: "stretch",
-                }}
-              >
-                <TransactionButtton textName="Transacties" />
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  alignSelf: "stretch",
-                }}
-              >
-                <TransactionButtton textName="Lasten" />
-              </View>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text style={{ fontSize: 30, fontWeight: "bold", padding: 5 }}>
-                Geschiedenis
-              </Text>
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  color: "#56d756",
-                }}
-              >
-                Jouw transacties vind je dier
-              </Text>
-            </View>
+          <Balance
+            balance={balance}
+            points={points}
+            title={"Van Jan 1 tot Jan 7"}
+          />
+          <View style={{ alignSelf: "center" }}>
+            <VirtualPet
+              animationPath={require("../assets/VirtualPet/sitting_bee.json")}
+              size={180}
+            />
           </View>
         </View>
 
@@ -147,7 +103,8 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   transactionsList: {
-    flex: 1.3,
+    flex: 1,
+    paddingTop: 10,
   },
   balanceContainer: {
     flex: 1,

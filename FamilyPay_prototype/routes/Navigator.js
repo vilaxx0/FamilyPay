@@ -11,6 +11,7 @@ import Spelen from "../screens/spelen";
 import Categoriseer from "../screens/quizzes/categoriseer";
 import Betaal_Minder from "../screens/quizzes/betaal_minder";
 import Finish from "../screens/quizzes/finished";
+import TryAgain from "../screens/quizzes/try_again";
 
 export default function Navigator() {
   const Stack = createStackNavigator();
@@ -28,7 +29,7 @@ export default function Navigator() {
           name="Transacties"
           component={Transacties}
           options={{
-            title: "TRANSACTIES",
+            title: "STATUS",
             headerTintColor: "#fff",
             headerStyle: {
               backgroundColor: "#56d756",
@@ -90,7 +91,7 @@ export default function Navigator() {
         />
         <Stack.Screen
           name="Betaal"
-          component={Categoriseer}
+          component={Betaal_Minder}
           options={{
             headerShown: false,
           }}
@@ -98,6 +99,13 @@ export default function Navigator() {
         <Stack.Screen
           name="Finish"
           component={Finish}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="TryAgain"
+          component={TryAgain}
           options={{
             headerShown: false,
           }}

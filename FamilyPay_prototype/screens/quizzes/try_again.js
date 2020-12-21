@@ -2,40 +2,54 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
+import { NavigationActions, StackActions } from "react-navigation";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import VirtualPet from "../../components/VirtualPet";
+import categoriseerQuestions from "../../data/categoriseer_transacties";
+import betaalQuestions from "../../data/betaal_minder";
 
-import { EventRegister } from "react-native-event-listeners";
-
-export default function Finish({ route, navigation }) {
-  const { points, userName, titleText, eventName } = route.params;
+export default function TryAgain({ route, navigation }) {
+  const { userName, titleText, screenName } = route.params;
   return (
     <View style={styles.container}>
       <View style={styles.main}>
         <View style={styles.petContainer}>
           <VirtualPet
-            animationPath={require("../../assets/VirtualPet/happy_bee.json")}
+            animationPath={require("../../assets/VirtualPet/scared_bee.json")}
             size={350}
           />
         </View>
         <View style={styles.titleContainer}>
-          <Text style={styles.pointsText}>
-            + {JSON.stringify(points)} punten
-          </Text>
           <Text style={styles.text}>
-            Wow goed gedaan {userName}! {titleText}
+            Helaas {userName}. {titleText}
           </Text>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={() => {
-              EventRegister.emit(eventName, points);
+              navigation.replace(screenName, {
+                questions:
+                  screenName == "Betaal"
+                    ? betaalQuestions
+                    : categoriseerQuestions,
+              });
+            }}
+          >
+            <View style={styles.button}>
+              <View style={styles.innerButton}>
+                <FontAwesome name={"repeat"} size={40} color="white" />
+              </View>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
               navigation.navigate("Home");
             }}
           >
             <View style={styles.button}>
               <View style={styles.innerButton}>
-                <FontAwesome5 name={"check"} size={40} color="white" />
+                <FontAwesome5 name={"home"} size={40} color="white" />
               </View>
             </View>
           </TouchableOpacity>
@@ -72,8 +86,10 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
+    width: "100%",
   },
   button: {
     alignItems: "center",

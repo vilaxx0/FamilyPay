@@ -1,12 +1,14 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, FlatList, ScrollView } from "react-native";
 
 import { globalStyles } from "../shared/globalStyles";
-import BackButton from "../shared/back_button";
+import BackButton from "../components/back_button";
 import Balance from "../components/Balance";
 import VirtualPet from "../components/VirtualPet";
 import SpelenCard from "../components/Spelen_Card";
+import categoriseerQuestions from "../data/categoriseer_transacties";
+import betaalQuestions from "../data/betaal_minder";
 
 export default function Spelen({ navigation, route }) {
   const [quiz, setQuiz] = useState([
@@ -37,7 +39,13 @@ export default function Spelen({ navigation, route }) {
       headerLeft: () => <BackButton navigation={navigation} />,
     });
   }, [navigation]);
-  const { balance, points } = route.params;
+  const {
+    balance,
+    points,
+    categorizeAvailable,
+    betaalAvailable,
+  } = route.params;
+
   return (
     <View style={globalStyles.spelenContainer}>
       <View style={globalStyles.spelenInnerContainer}>
@@ -46,6 +54,7 @@ export default function Spelen({ navigation, route }) {
             <Balance
               balance={JSON.stringify(balance)}
               points={JSON.stringify(points)}
+              title={"Je hebt al veel gespaard!"}
             />
             <View style={{ alignSelf: "center" }}>
               <VirtualPet
@@ -56,10 +65,20 @@ export default function Spelen({ navigation, route }) {
           </View>
 
           <View style={globalStyles.spelenFooter}>
-            <FlatList
-              data={quiz}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => <SpelenCard item={item} />}
+            <SpelenCard
+              item={quiz[0]}
+              data={categoriseerQuestions}
+              available={categorizeAvailable}
+            />
+            <SpelenCard
+              item={quiz[1]}
+              data={betaalQuestions}
+              available={betaalAvailable}
+            />
+            <SpelenCard
+              item={quiz[2]}
+              data={categoriseerQuestions}
+              available={false}
             />
           </View>
         </ScrollView>

@@ -2,10 +2,10 @@ import React from "react";
 import { Text, View } from "react-native";
 import { globalStyles } from "../shared/globalStyles";
 
-export default function Balance({ balance, points }) {
+export default function Balance({ balance, points, title }) {
   return (
-    <View style={(globalStyles.simpleContainer, { margin: 15 })}>
-      <Text style={globalStyles.balanceTitle}>Je hebt al veel gespaard!</Text>
+    <View style={(globalStyles.simpleContainer, { marginVertical: 15 })}>
+      <Text style={globalStyles.balanceTitle}>{title}</Text>
       <View style={globalStyles.balanceColumn}>
         <View style={globalStyles.balanceNumberColumn}>
           <Text style={globalStyles.balanceNumberText}>{balance}€</Text>

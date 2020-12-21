@@ -9,11 +9,13 @@ export const globalStyles = StyleSheet.create({
   balanceText: {
     fontFamily: "fugaz-regular",
     fontSize: 25,
+    marginTop: 5,
   },
   balanceTitle: {
-    fontSize: Dimensions.get("window").width * 0.07,
+    fontSize: Dimensions.get("window").width * 0.075,
     fontFamily: "fredoka-regular",
     alignSelf: "center",
+    textAlign: "center",
   },
   balanceColumn: {
     flexDirection: "row",
@@ -26,10 +28,10 @@ export const globalStyles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 10,
+    marginVertical: 5,
   },
   balanceNumberText: {
-    fontSize: 40,
+    fontSize: 43,
     fontWeight: "bold",
     color: "#f7b31d",
   },

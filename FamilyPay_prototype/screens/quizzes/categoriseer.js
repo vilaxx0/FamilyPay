@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import {
   View,
   StyleSheet,
@@ -6,15 +6,16 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
+  Image,
 } from "react-native";
 
 import { Alert } from "../../components/Alert";
-import Button from "../../shared/categoriseer_answer_button";
+import Button from "../../components/categoriseer_answer_button";
 
 export default class Categoriseer extends Component {
   state = {
     correctCount: 0,
-    incorrectCount: 0,
+    heartsLeft: 3,
     totalCount: this.props.route.params.questions.length,
     activeQuestionIndex: 0,
     answered: false,
@@ -30,7 +31,7 @@ export default class Categoriseer extends Component {
           nextState.correctCount = state.correctCount + 1;
           nextState.answerCorrect = true;
         } else {
-          nextState.incorrectCount = state.incorrectCount + 1;
+          nextState.heartsLeft = state.heartsLeft - 1;
           nextState.answerCorrect = false;
         }
 
@@ -45,11 +46,20 @@ export default class Categoriseer extends Component {
   nextQuestion = () => {
     this.setState((state, props) => {
       const nextIndex = state.activeQuestionIndex + 1;
+      if (state.heartsLeft == 0) {
+        return props.navigation.navigate("TryAgain", {
+          userName: "Vilius",
+          titleText:
+            "Je hebt drie verkeerde vragen. Probeer het a.u.b. opnieuw.",
+          screenName: "Categoriseer",
+        });
+      }
       if (nextIndex >= state.totalCount) {
         return props.navigation.navigate("Finish", {
-          points: 10,
+          points: state.totalCount * 5,
           userName: "Vilius",
           titleText: "Je hebt de quiz succesful voltooid!",
+          eventName: "addPointsCategorize",
         });
       }
 
@@ -64,15 +74,25 @@ export default class Categoriseer extends Component {
     const questions = this.props.route.params.questions;
     const question = questions[this.state.activeQuestionIndex];
 
+    const hearts = [];
+
+    for (var i = 0; i < this.state.heartsLeft; i++) {
+      hearts.push(
+        <Image
+          key={i}
+          source={require("../../assets/mainHeart.png")}
+          style={{ width: 40, height: 40, marginHorizontal: 2 }}
+        />
+      );
+    }
     return (
       <View style={styles.container}>
         <View style={styles.main}>
+          <View style={{ flexDirection: "row", padding: 5 }}>{hearts}</View>
           <Text style={styles.questionCountText}>
             {`${this.state.activeQuestionIndex + 1}/${this.state.totalCount}`}
           </Text>
-          <Text style={styles.questionCountText}>
-            {`Correct: ${this.state.correctCount} Incorrect: ${this.state.incorrectCount}`}
-          </Text>
+
           <View style={styles.topPart}>
             <Text style={{ fontSize: 75, fontFamily: "righteous-regular" }}>
               - 15€
@@ -94,7 +114,10 @@ export default class Categoriseer extends Component {
                 keyExtractor={(item) => item.id}
                 data={question.answers}
                 renderItem={({ item }) => (
-                  <TouchableOpacity onPress={() => this.answer(item.correct)}>
+                  <TouchableOpacity
+                    key={item.id}
+                    onPress={() => this.answer(item.correct)}
+                  >
                     <Button
                       iconName={item.icon}
                       iconSize={55}
@@ -130,7 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: "white",
     margin: 15,
-    padding: 20,
+    paddingHorizontal: 20,
 
     width: "93%",
   },
@@ -163,6 +186,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
-    margin: 20,
+    marginBottom: 20,
   },
 });
