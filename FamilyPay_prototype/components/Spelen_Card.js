@@ -138,27 +138,7 @@ const styles = StyleSheet.create({
     borderColor: "#D4AC0D",
     paddingHorizontal: 50,
   },
-  modalButton: {
-    backgroundColor: "#F3E55D",
-    alignItems: "center",
-    borderWidth: 2,
-    borderRadius: 15,
-    borderColor: "#D4AC0D",
-    padding: 5,
-    margin: 5,
-    elevation: 16,
-    shadowOffset: { width: 0, height: 8 },
-    shadowColor: "#000",
-    shadowOpacity: 0.44, // from 0 to 1
-    shadowRadius: 10.32,
-  },
-  modalInnerButton: {
-    backgroundColor: "#F3E55D",
-    borderWidth: 2,
-    borderRadius: 15,
-    padding: 5,
-    borderColor: "#D4AC0D",
-  },
+
   content: {
     backgroundColor: "white",
     paddingVertical: 22,

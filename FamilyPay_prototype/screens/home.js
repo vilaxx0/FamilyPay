@@ -32,6 +32,14 @@ export default class Home extends Component {
     };
     //listener to add points after finishing quiz and set the date
     this.listener = EventRegister.addEventListener(
+      "addPointsGoal",
+      (points) => {
+        this.setState({
+          points: this.state.points + points,
+        });
+      }
+    );
+    this.listener = EventRegister.addEventListener(
       "addPointsCategorize",
       (points) => {
         this.setState({
@@ -116,7 +124,7 @@ export default class Home extends Component {
           </View>
 
           <View style={styles.footer}>
-            <View style={styles.button}>
+            <View style={{ bottom: 15 }}>
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("Status", {
@@ -132,8 +140,22 @@ export default class Home extends Component {
                 />
               </TouchableOpacity>
             </View>
-
-            <View style={styles.button}>
+            <View style={{ bottom: -15 }}>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("Goals", {
+                    balance: this.state.balance,
+                  })
+                }
+              >
+                <RouteButton
+                  textName="DOELEN"
+                  iconName="bullseye"
+                  iconSize={44}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ bottom: 15 }}>
               <TouchableOpacity
                 onPress={() =>
                   navigationCheck(
@@ -174,15 +196,15 @@ export default class Home extends Component {
               <TouchableOpacity
                 onPress={() => {
                   changeAnimation(
-                    require("../assets/VirtualPet/eating_candy.json")
+                    require("../assets/VirtualPet/eating_coco.json")
                   );
                 }}
               >
                 <Image
                   style={styles.activityIcon}
-                  source={require("../assets/candy.png")}
+                  source={require("../assets/chocolate-bar.png")}
                 />
-                <Text style={styles.activityText}>Snoepje</Text>
+                <Text style={styles.activityText}>Chocolade</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -264,7 +286,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     bottom: "1%",
-    width: "90%",
+    width: "100%",
   },
   giftButton: {
     backgroundColor: "#F3E55D",

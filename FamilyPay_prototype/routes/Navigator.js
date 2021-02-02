@@ -7,7 +7,8 @@ import Home from "../screens/home";
 import Transacties from "../screens/transacties";
 import Status from "../screens/status";
 import Spelen from "../screens/spelen";
-
+import Goals from "../screens/goals";
+import CompleteGoal from "../screens/completeGoal";
 import Categoriseer from "../screens/quizzes/categoriseer";
 import Betaal_Minder from "../screens/quizzes/betaal_minder";
 import Finish from "../screens/quizzes/finished";
@@ -83,6 +84,25 @@ export default function Navigator() {
           }}
         />
         <Stack.Screen
+          name="Goals"
+          component={Goals}
+          options={{
+            title: "DOELEN",
+            headerTintColor: "#fff",
+            headerStyle: {
+              backgroundColor: "#56d756",
+              elevation: 0,
+              shadowOpacity: 0,
+            },
+            headerStatusBarHeight: 30,
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontSize: 40,
+              fontFamily: "righteous-regular",
+            },
+          }}
+        />
+        <Stack.Screen
           name="Categoriseer"
           component={Categoriseer}
           options={{
@@ -106,6 +126,13 @@ export default function Navigator() {
         <Stack.Screen
           name="TryAgain"
           component={TryAgain}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="CompleteGoal"
+          component={CompleteGoal}
           options={{
             headerShown: false,
           }}

@@ -2,7 +2,9 @@ import React from "react";
 import { useFonts } from "expo-font";
 import { AppLoading } from "expo";
 import Navigator from "./routes/Navigator";
-
+import { LogBox } from "react-native";
+LogBox.ignoreLogs(["Warning: ..."]);
+LogBox.ignoreAllLogs();
 export default function App() {
   let [fontsLoaded] = useFonts({
     "lobster-regular": require("./assets/fonts/Lobster-Regular.ttf"),
